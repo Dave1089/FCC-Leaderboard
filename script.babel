@@ -1,0 +1,82 @@
+class Leader extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      records: [],
+      url: 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
+    };
+  }
+
+  componentDidMount() {
+    var link = this.state.url
+    this.getData(link);
+  }
+  getData(link) {
+    // var link = this.state.url
+    $.getJSON(link, function(json) {
+        this.setState({
+          records: json
+        });
+
+      }.bind(this)
+
+    );
+
+  }
+
+  componentWillUnmount() {
+    this.serverRequest.abort();
+  }
+
+  toggleDays() {
+    
+    this.setState({
+      url: 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
+    });
+    this.getData(this.state.url);
+  }
+
+  toggleAll() {
+    this.setState({
+      url: 'https://fcctop100.herokuapp.com/api/fccusers/top/alltime'
+    });
+    this.getData(this.state.url);
+  }
+
+  render() {
+    return (
+
+      <table className="board">
+      <thead>
+        <tr>
+          <th colSpan={5}>Leaderboard</th>
+        </tr>
+        <tr>
+          <th colSpan={3}>Camper</th>
+          <th onClick={this.toggleDays.bind(this)}>Brownie Points <span className="lbreak">(Past 30 Days)</span></th>
+          <th onClick={this.toggleAll.bind(this)}>Brownie Points <span className="lbreak">(All Time Total)</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {this.state.records.map(function(record){
+          return(
+            <tr>
+            <td>{this.state.records.indexOf(record) + 1}</td>
+            <td className='small'><img src={record.img} /></td>
+            <td><a href={"https://www.freecodecamp.com/"+ record.username} target="_blank">{record.username}</a></td>
+            <td>{record.recent}</td>
+            <td>{record.alltime}</td>
+            </tr>
+          ); 
+        }.bind(this)
+      )
+    }
+      </tbody>
+      </table>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Leader />, document.querySelector('#leaderboard')
+);
