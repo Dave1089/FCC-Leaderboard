@@ -1,46 +1,36 @@
 class Leader extends React.Component {
   constructor() {
     super();
-    this.state = {
-      records: [],
-      url: 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
-    };
+    this.state = {records: []};
+    this.url = 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
   }
 
   componentDidMount() {
-    var link = this.state.url
+    var link = this.url
     this.getData(link);
   }
   getData(link) {
-    // var link = this.state.url
     $.getJSON(link, function(json) {
         this.setState({
           records: json
         });
-
       }.bind(this)
-
     );
-
-  }
-
-  componentWillUnmount() {
-    this.serverRequest.abort();
   }
 
   toggleDays() {
     
-    this.setState({
-      url: 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
-    });
-    this.getData(this.state.url);
+    // this.setState({
+    //   url: 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
+    // });
+    this.getData('https://fcctop100.herokuapp.com/api/fccusers/top/recent');
   }
 
   toggleAll() {
-    this.setState({
-      url: 'https://fcctop100.herokuapp.com/api/fccusers/top/alltime'
-    });
-    this.getData(this.state.url);
+    // this.setState({
+    //   url: 'https://fcctop100.herokuapp.com/api/fccusers/top/alltime'
+    // });
+    this.getData('https://fcctop100.herokuapp.com/api/fccusers/top/alltime');
   }
 
   render() {
