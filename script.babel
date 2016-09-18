@@ -1,15 +1,10 @@
 class Leader extends React.Component {
   constructor() {
     super();
-    this.state = {records: []};
+    this.state = {records: [], glyphOne: "glyphicon glyphicon-sort", glyphTwo: "hidden"};
     this.url = 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
   }
-
-  componentDidMount() {
-    var link = this.url
-    this.getData(link);
-  }
-  getData(link) {
+getData(link) {
     $.getJSON(link, function(json) {
         this.setState({
           records: json
@@ -17,25 +12,27 @@ class Leader extends React.Component {
       }.bind(this)
     );
   }
+componentDidMount() {
+    var link = this.url
+    this.getData(link);
+  }
 
   toggleDays() {
-    
-    // this.setState({
-    //   url: 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
-    // });
     this.getData('https://fcctop100.herokuapp.com/api/fccusers/top/recent');
+    this.setState({glyphOne:"glyphicon glyphicon-sort"});
+    this.setState({glyphTwo:"hidden"});
+
   }
 
   toggleAll() {
-    // this.setState({
-    //   url: 'https://fcctop100.herokuapp.com/api/fccusers/top/alltime'
-    // });
-    this.getData('https://fcctop100.herokuapp.com/api/fccusers/top/alltime');
+   this.getData('https://fcctop100.herokuapp.com/api/fccusers/top/alltime');
+   this.setState({glyphOne:"hidden"})
+   this.setState({glyphTwo:"glyphicon glyphicon-sort"});
+   
   }
 
   render() {
     return (
-
       <table className="board">
       <thead>
         <tr>
@@ -43,8 +40,8 @@ class Leader extends React.Component {
         </tr>
         <tr>
           <th colSpan={3}>Camper</th>
-          <th onClick={this.toggleDays.bind(this)}>Brownie Points <span className="lbreak">(Past 30 Days)</span></th>
-          <th onClick={this.toggleAll.bind(this)}>Brownie Points <span className="lbreak">(All Time Total)</span></th>
+          <th className="thirty" onClick={this.toggleDays.bind(this)}>Brownie Points <span className="lbreak">(Past 30 Days)</span><br/><span className={this.state.glyphOne}></span></th>
+          <th className="all" onClick={this.toggleAll.bind(this)}>Brownie Points <span className="lbreak">(All Time Total)</span><br/><span className={this.state.glyphTwo}></span></th>
         </tr>
       </thead>
       <tbody>
